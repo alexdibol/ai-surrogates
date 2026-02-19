@@ -266,34 +266,46 @@
 </section>
 
 <!-- BOOK -->
-<section id="book">
-  <h2>The book</h2>
+<!-- BOOK STRUCTURE -->
+<section>
+  <h2>The book structure (3 chapters)</h2>
 
   <p>
-    The book is not optional context; it is the governing layer that keeps the laboratories honest.
-    The notebooks are not substitutes for the book, and the book is not complete without execution.
-    Together they form a single professional unit: mechanism → implementation → stress → gate decision → artifacts.
+    This repository is organized to match the book exactly. Each chapter has a corresponding governed notebook in <code>/notebooks/</code>.
   </p>
 
   <div class="grid">
     <div class="card">
-      <h3>AI Surrogates Book (PDF)</h3>
+      <h3>Chapter 1 — Why Surrogacy Needs Governance</h3>
       <p>
-        A governance-first framework for surrogate decision systems in finance:
-        proxy contracts, constrained controllers, termination logic, escalation posture,
-        and reproducible stage gates that produce audit-grade artifacts.
+        Surrogacy as a <strong>proxy contract</strong>: what the surrogate may and may not claim. Enforces “generation ≠ verification”,
+        and makes facts vs assumptions vs open items a first-class output requirement.
       </p>
-      <a href="https://github.com/alexdibol/ai-surrogates/blob/main/book/AI%20SURROGATES%20BOOK.pdf" target="_blank" rel="noopener">
-        Read Book (PDF)
-      </a>
+      <p class="tiny"><strong>Deliverable expectation:</strong> a reviewer can reconstruct the logic from artifacts, not from persuasion.</p>
+    </div>
+
+    <div class="card">
+      <h3>Chapter 2 — Mechanisms: Constrained Surrogate Controllers</h3>
+      <p>
+        Surrogates designed like controllers: explicit state, explicit constraints, explicit routing,
+        explicit termination reasons, explicit escalation paths, and measurable constraint margins
+        (distribution, not point estimates).
+      </p>
+      <p class="tiny"><strong>Deliverable expectation:</strong> the system can explain why it stopped and why it escalated.</p>
+    </div>
+
+    <div class="card">
+      <h3>Chapter 3 — Evaluation &amp; Acceptance: Reproducible Stage Gates</h3>
+      <p>
+        This repo is not a leaderboard. It is an acceptance framework:
+        compliance distributions across seeds, structural-break stress tests,
+        boundary-time targets, and exportable advance / revise / reject artifacts.
+      </p>
+      <p class="tiny"><strong>Deliverable expectation:</strong> promotion is earned via artifacts and gates, not vibes.</p>
     </div>
   </div>
-
-  <div class="callout">
-    <strong>Operating rule:</strong> Interpret notebook outcomes as governed experimental outputs.
-    They are tagged <strong>Not verified</strong> by design until independently replicated and reviewed.
-  </div>
 </section>
+
 
 <!-- BOOK STRUCTURE -->
 <section>
