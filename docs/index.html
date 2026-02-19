@@ -1,1 +1,515 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>AI Surrogates in Finance — Constrained Surrogacy Under Governance (Synthetic-First)</title>
+  <meta name="description" content="AI Surrogates in Finance: governance-first, synthetic-first laboratories for surrogate decision systems under explicit constraints. One book and three governed notebooks implementing: proxy contract → constrained controller → reproducible stage gates + audit artifacts. Not an alpha-seeking repo." />
+
+  <style>
+    :root{
+      --bg:#07080d;
+      --panel:#0f1220;
+      --panel2:#141836;
+      --text:#eef0ff;
+      --muted:#b8bddb;
+      --border:rgba(255,255,255,0.09);
+      --accent:#7aa2ff;
+      --accent2:#6ee7c8;
+      --warn:#ffd27a;
+      --shadow:0 18px 60px rgba(0,0,0,0.45);
+      --danger:#ff7a7a;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      background:
+        radial-gradient(900px 600px at 20% 10%, rgba(122,162,255,0.14), transparent 60%),
+        radial-gradient(800px 600px at 80% 90%, rgba(110,231,200,0.10), transparent 60%),
+        var(--bg);
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      line-height:1.75;
+    }
+    a{color:var(--accent);text-decoration:none;}
+    a:hover{color:var(--accent2);text-decoration:underline;}
+    .container{max-width:1180px;margin:0 auto;padding:48px 22px 96px;}
+
+    h1{font-size:40px;margin:0 0 14px;text-transform:uppercase;letter-spacing:0.02em;}
+    h2{font-size:30px;margin:64px 0 14px;}
+    h3{font-size:19px;margin:0 0 10px;}
+    p{color:var(--muted);max-width:110ch;}
+
+    .hero{
+      padding:44px;
+      border-radius:24px;
+      background:linear-gradient(180deg, rgba(20,24,54,0.95), rgba(15,18,32,0.9));
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+    }
+
+    .pillrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;}
+    .pill{
+      display:inline-block;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(122,162,255,0.22);
+      background:rgba(122,162,255,0.08);
+      color:var(--muted);
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:0.06em;
+      text-transform:uppercase;
+    }
+    .pill.warn{border:1px solid rgba(255,210,122,0.26);background:rgba(255,210,122,0.07);}
+    .pill.danger{border:1px solid rgba(255,122,122,0.28);background:rgba(255,122,122,0.07);}
+
+    .callout{
+      margin-top:26px;
+      padding:22px;
+      border-radius:20px;
+      background:linear-gradient(135deg, rgba(122,162,255,0.08), rgba(110,231,200,0.06));
+      border:1px solid rgba(122,162,255,0.22);
+      color:var(--muted);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:20px;
+      margin-top:28px;
+    }
+
+    .card{
+      padding:22px;
+      border-radius:20px;
+      background:var(--panel2);
+      border:1px solid var(--border);
+      box-shadow:0 12px 34px rgba(0,0,0,0.32);
+      display:flex;
+      flex-direction:column;
+      min-height:260px;
+    }
+
+    .card p{margin:0;}
+    .card p + p{ margin-top:10px; }
+
+    .card a{
+      display:inline-block;
+      margin-top:auto;
+      padding-top:14px;
+      font-weight:800;
+      letter-spacing:0.03em;
+      text-transform:uppercase;
+      font-size:12px;
+    }
+
+    .rulebox{
+      margin-top:28px;
+      padding:28px;
+      border-radius:22px;
+      border:1px solid rgba(255,210,122,0.35);
+      background:linear-gradient(135deg, rgba(255,210,122,0.07), rgba(122,162,255,0.06));
+    }
+
+    .rulehdr{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:12px;
+      flex-wrap:wrap;
+    }
+
+    .kicker{
+      font-size:13px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      color:var(--muted);
+      font-weight:800;
+    }
+
+    ul{
+      margin:12px 0 0 18px;
+      color:var(--muted);
+    }
+    li{margin:6px 0;}
+
+    footer{
+      margin-top:96px;
+      padding-top:32px;
+      border-top:1px solid var(--border);
+      font-size:13px;
+      color:var(--muted);
+      text-align:center;
+    }
+
+    .quicklinks{
+      margin-top:26px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      align-items:center;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:rgba(15,18,32,0.7);
+      color:var(--text);
+      font-weight:800;
+      letter-spacing:0.03em;
+      text-transform:uppercase;
+      font-size:12px;
+    }
+    .btn:hover{border-color:rgba(122,162,255,0.35);background:rgba(20,24,54,0.75);text-decoration:none;color:var(--text);}
+
+    code{
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:2px 7px;
+      border-radius:10px;
+      color:var(--text);
+      font-size:13px;
+    }
+
+    .tiny{font-size:13px;color:var(--muted);}
+  </style>
+</head>
+
+<body>
+<main class="container">
+
+<!-- INTRO -->
+<section class="hero">
+  <h1>AI Surrogates in Finance</h1>
+
+  <div class="pillrow">
+    <div class="pill">Constrained Surrogacy Under Governance</div>
+    <div class="pill">Synthetic-First</div>
+    <div class="pill">Auditable · Reproducible</div>
+    <div class="pill warn">Human-Accountable</div>
+  </div>
+
+  <p>
+    This repository is the governed home of <strong>AI Surrogates in Finance</strong>:
+    a synthetic-first, reviewable laboratory for designing <strong>surrogate decision systems</strong>
+    in finance under explicit constraints.
+  </p>
+
+  <p>
+    The objective is not “a smarter model.” The objective is <strong>a defensible controller</strong>:
+    a surrogate that behaves like a contract—explicit state, explicit constraints, explicit termination,
+    explicit artifacts—so an independent reviewer can answer:
+    what happened, why it happened, which constraints were active, how close the system ran to boundaries,
+    what is fact vs assumption vs open item, and what required human escalation.
+  </p>
+
+  <p>
+    This repo is intentionally explicit about limits:
+    it does <strong>not</strong> promise alpha discovery,
+    it does <strong>not</strong> treat backtests as evidence,
+    it does <strong>not</strong> claim production readiness by default,
+    and it does <strong>not</strong> claim correctness of external facts.
+  </p>
+
+  <div class="callout">
+    <strong>Core premise:</strong> <strong>Capability ↑ ⇒ Risk ↑ ⇒ Controls ↑</strong>
+  </div>
+
+  <div class="quicklinks">
+    <a class="btn" href="#book">Read Book (PDF)</a>
+    <a class="btn" href="#notebooks">Open Notebooks</a>
+    <a class="btn" href="#governance">Governance Contract</a>
+    <a class="btn" href="#use">How to Use</a>
+  </div>
+</section>
+
+<!-- WHAT THIS IS -->
+<section>
+  <h2>What this repository is</h2>
+
+  <p>
+    Surrogates are proxies. Proxies take actions (or drive decisions). Once a model becomes a proxy for a decision,
+    “accuracy” is not the main question. The main question is whether the proxy is <strong>reviewable under constraint</strong>.
+    This repository treats surrogacy as a professional control problem: governed, bounded, and reconstructable from artifacts.
+  </p>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Repository structure</h3>
+      <p><code>/book/</code> — The governing spec: definitions, mechanisms, failure modes, acceptance gates.</p>
+      <p><code>/notebooks/</code> — The governed laboratories: synthetic data, diagnostics, mandatory artifacts.</p>
+      <a href="#book">See Book</a>
+    </div>
+
+    <div class="card">
+      <h3>What a reviewer must be able to answer</h3>
+      <p>
+        What happened · why it happened · which constraints bound · how close the system ran to boundaries · what is fact vs assumption vs open item · what required escalation.
+      </p>
+      <a href="#governance">See Governance Contract</a>
+    </div>
+
+    <div class="card">
+      <h3>Explicit limits</h3>
+      <p>
+        No alpha promises · no “backtest = evidence” posture · no default production claims · no unverified external facts presented as truth.
+      </p>
+      <a href="#disclaimers">Read Disclaimers</a>
+    </div>
+  </div>
+</section>
+
+<!-- BOOK -->
+<section id="book">
+  <h2>The book</h2>
+
+  <p>
+    The book is not optional context; it is the governing layer that keeps the laboratories honest.
+    The notebooks are not substitutes for the book, and the book is not complete without execution.
+    Together they form a single professional unit: mechanism → implementation → stress → gate decision → artifacts.
+  </p>
+
+  <div class="grid">
+    <div class="card">
+      <h3>AI Surrogates Book (PDF)</h3>
+      <p>
+        A governance-first framework for surrogate decision systems in finance:
+        proxy contracts, constrained controllers, termination logic, escalation posture,
+        and reproducible stage gates that produce audit-grade artifacts.
+      </p>
+      <a href="https://github.com/alexdibol/ai-surrogates/blob/main/book/AI%20SURROGATES%20BOOK.pdf" target="_blank" rel="noopener">
+        Read Book (PDF)
+      </a>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Operating rule:</strong> Interpret notebook outcomes as governed experimental outputs.
+    They are tagged <strong>Not verified</strong> by design until independently replicated and reviewed.
+  </div>
+</section>
+
+<!-- BOOK STRUCTURE -->
+<section>
+  <h2>The book structure (3 chapters)</h2>
+
+  <p>
+    This repository is organized to match the book exactly. Each chapter has a corresponding governed notebook in <code>/notebooks/</code>.
+  </p>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Chapter 1 — Why Surrogacy Needs Governance</h3>
+      <p>
+        Surrogacy as a <strong>proxy contract</strong>: what the surrogate may and may not claim. Enforces “generation ≠ verification”,
+        and makes facts vs assumptions vs open items a first-class output requirement.
+      </p>
+      <p class="tiny"><strong>Deliverable expectation:</strong> a reviewer can reconstruct the logic from artifacts, not from persuasion.</p>
+      <a href="#notebooks">Open Chapter 1 Notebook</a>
+    </div>
+
+    <div class="card">
+      <h3>Chapter 2 — Mechanisms: Constrained Surrogate Controllers</h3>
+      <p>
+        Surrogates designed like controllers: explicit state, explicit constraints, explicit routing,
+        explicit termination reasons, explicit escalation paths, and measurable constraint margins
+        (distribution, not point estimates).
+      </p>
+      <p class="tiny"><strong>Deliverable expectation:</strong> the system can explain why it stopped and why it escalated.</p>
+      <a href="#notebooks">Open Chapter 2 Notebook</a>
+    </div>
+
+    <div class="card">
+      <h3>Chapter 3 — Evaluation & Acceptance: Reproducible Stage Gates</h3>
+      <p>
+        This repo is not a leaderboard. It is an acceptance framework:
+        compliance distributions across seeds, structural-break stress tests,
+        boundary-time targets, and exportable advance / do-not-advance decisions.
+      </p>
+      <p class="tiny"><strong>Deliverable expectation:</strong> promotion is earned via artifacts and gates, not vibes.</p>
+      <a href="#notebooks">Open Chapter 3 Notebook</a>
+    </div>
+  </div>
+</section>
+
+<!-- NOTEBOOKS -->
+<section id="notebooks">
+  <h2>Notebooks (mapped to the 3 chapters)</h2>
+
+  <p>
+    The notebooks are not “examples.” They are the operational proof of the book.
+    Notebook names and numbering live in <code>/notebooks/</code> and should be read as the lab companion to the corresponding chapter.
+  </p>
+
+  <div class="grid">
+    <div class="card">
+      <h3>CHAPTER 1.ipynb</h3>
+      <p>
+        Proxy-contract discipline: explicit separation of facts / assumptions / open items, reproducible synthetic setups,
+        and an early termination + escalation posture that refuses persuasive output when evidence is missing.
+      </p>
+      <a href="https://github.com/alexdibol/ai-surrogates/blob/main/notebooks/CHAPTER%201.ipynb" target="_blank" rel="noopener">
+        Open Notebook
+      </a>
+    </div>
+
+    <div class="card">
+      <h3>CHAPTER 2.ipynb</h3>
+      <p>
+        Constrained control loops: explicit state machines and routing, constraint enforcement with margin tracking,
+        bounded retries, safe failure, and explicit termination reasons that make “stop” a governed feature.
+      </p>
+      <a href="https://github.com/alexdibol/ai-surrogates/blob/main/notebooks/CHAPTER%202.ipynb" target="_blank" rel="noopener">
+        Open Notebook
+      </a>
+    </div>
+
+    <div class="card">
+      <h3>CHAPTER 3.ipynb</h3>
+      <p>
+        Evaluation harnesses: compliance distributions across seeds, structural break stress testing,
+        comparative baselines (conservative + robust references), and exportable advance / revise / reject artifacts.
+      </p>
+      <a href="https://github.com/alexdibol/ai-surrogates/blob/main/notebooks/CHAPTER%203.ipynb" target="_blank" rel="noopener">
+        Open Notebook
+      </a>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Notebook invariant:</strong> synthetic-first (deterministic seed) · explicit state · bounded loops · explicit termination reasons ·
+    facts/assumptions/open separation · export artifacts every run · <strong>verification_status="Not verified"</strong>.
+  </div>
+</section>
+
+<!-- GOVERNANCE CONTRACT -->
+<section id="governance">
+  <h2>What every notebook enforces (non-negotiable)</h2>
+
+  <p>
+    This repository follows a strict laboratory contract. These are not “nice-to-haves.” They are what makes surrogacy reviewable.
+  </p>
+
+  <div class="rulebox">
+    <div class="rulehdr">
+      <div>
+        <div class="kicker">Laboratory Contract</div>
+        <div class="tiny">A surrogate is acceptable only if a third party can reconstruct, challenge, and supervise it from artifacts.</div>
+      </div>
+      <div class="pillrow">
+        <div class="pill danger">Stop is a feature</div>
+        <div class="pill warn">Not verified by default</div>
+      </div>
+    </div>
+
+    <ul>
+      <li>Run <strong>synthetic-first</strong> (deterministic under seed).</li>
+      <li>Define explicit <strong>state</strong> (TypedDict or equivalent).</li>
+      <li>Implement <strong>bounded loops</strong> (no unbounded retries).</li>
+      <li>Implement explicit <strong>termination reasons</strong> (why the system stopped).</li>
+      <li>Enforce <strong>facts vs assumptions vs open items</strong> separation.</li>
+      <li>Export review artifacts <strong>every run</strong>, including at minimum:</li>
+      <ul>
+        <li><code>run_manifest.json</code> (seed, versions, config hash, environment fingerprint)</li>
+        <li><code>final_state.json</code> (what the system believed at the end)</li>
+        <li><code>decision.json</code> (advance / revise / reject + reasons)</li>
+        <li><code>risk_log.json</code> (risks triggered + controls applied)</li>
+        <li><code>artifacts/</code> folder for generated deliverables</li>
+      </ul>
+    </ul>
+  </div>
+
+  <div class="callout">
+    <strong>Shared governance spine:</strong> generation ≠ verification · facts are not assumptions · scope/boundary control · auditability by design · human accountability.
+  </div>
+</section>
+
+<!-- HOW TO USE -->
+<section id="use">
+  <h2>How to use this repository</h2>
+
+  <p>
+    Recommended posture:
+  </p>
+
+  <div class="grid">
+    <div class="card">
+      <h3>1) Start with mechanism</h3>
+      <p>Read the relevant chapter in <code>/book/</code> (mechanism + acceptance rules).</p>
+      <a href="#book">Open Book</a>
+    </div>
+
+    <div class="card">
+      <h3>2) Run the lab as-is</h3>
+      <p>Run the corresponding notebook(s) in <code>/notebooks/</code> without edits to reproduce baseline behavior.</p>
+      <a href="#notebooks">Open Notebooks</a>
+    </div>
+
+    <div class="card">
+      <h3>3) Inspect artifacts, not vibes</h3>
+      <p>Read termination reason, constraint margins, open items, and the stage-gate decision.</p>
+      <a href="#governance">See Artifact Minimums</a>
+    </div>
+
+    <div class="card">
+      <h3>4) Stress structurally</h3>
+      <p>Change regimes, tighten constraints, reduce evidence, and observe which failures emerge and why.</p>
+      <a href="#governance">See Constraints & Stops</a>
+    </div>
+
+    <div class="card">
+      <h3>5) Modify one mechanism at a time</h3>
+      <p>Change a single mechanism, re-run, and compare artifacts. If it “works” only when you ignore gates, it does not work.</p>
+      <a href="#governance">See Stage-Gate Discipline</a>
+    </div>
+  </div>
+</section>
+
+<!-- DISCLAIMERS -->
+<section id="disclaimers">
+  <h2>IMPORTANT DISCLAIMERS (read before use)</h2>
+
+  <div class="callout">
+    <p><strong>Educational / Non-Reliance:</strong> All materials are provided for educational and research purposes only.
+      Nothing here constitutes investment, trading, legal, tax, accounting, audit, or compliance advice.</p>
+
+    <p><strong>Not verified:</strong> Unless explicitly stated otherwise in a specific artifact, treat all outputs, claims,
+      calculations, citations, and conclusions as <strong>Not verified</strong>.</p>
+
+    <p><strong>Confidentiality and data hygiene:</strong> Do not paste confidential, proprietary, regulated, or personally identifying information into external systems.
+      Use anonymization/redaction and minimum-necessary inputs by default.</p>
+
+    <p><strong>No fabricated sources or claims:</strong> Zero tolerance for invented citations, performance claims, fees, terms, or consequences.
+      When evidence is missing, the correct output is a verification task list, not persuasive narrative.</p>
+  </div>
+</section>
+
+<!-- LICENSE & DISCLOSURE -->
+<section>
+  <h2>Licensing, Governance & AI Use Disclosure</h2>
+
+  <div class="callout">
+    <p><strong>Copyright © 2026 Alejandro Reynoso.</strong> All original text, structure, and pedagogical design remain the intellectual property of the author.</p>
+    <p><strong>License:</strong> MIT License. You may use, copy, modify, and distribute provided copyright and license notices are preserved.</p>
+    <p><strong>AI use disclosure:</strong> Generative AI tools were used to assist drafting and editing. Conceptual design, governance decisions, validation, and final approval are performed by the author. Responsibility for interpretation and use remains human-led.</p>
+  </div>
+
+  <div class="callout">
+    <p><strong>Contact:</strong> Alejandro Reynoso · Email: areynoso@yahoo.com · GitHub: <a href="https://github.com/alexdibol" target="_blank" rel="noopener">alexdibol</a></p>
+  </div>
+</section>
+
+<footer>
+  AI Surrogates in Finance · Constrained Surrogacy Under Governance · Synthetic-First · Audit-Grade Artifacts
+</footer>
+
+</main>
+</body>
+</html>
 
